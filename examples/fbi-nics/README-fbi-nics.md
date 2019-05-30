@@ -23,20 +23,6 @@
 ## Intro
 
 
-**Amazon Textract** was [announced about 6 months ago](https://news.ycombinator.com/item?id=18554122) but was made [public today (May 29)](https://finance.yahoo.com/news/aws-announces-general-availability-amazon-220000840.html). If have an AWS account, you can check out Textract's point-and-click demo, which allows you to upload an image or PDF for Textract to process with optical character recognition (OCR) and data table extraction. Obviously, the OCR ability is going to be a huge feature for many folks dealing with trying to extract data from scanned documents. However, Textract's capabilities in **data table extraction** is the focus of this gist)
-
-The demo is at this URL: https://console.aws.amazon.com/textract/home?region=us-east-1#/demo
-
-
-The Textract demo page conveniently features a sample document with a data table that – surprise, surprise – Textract manages to extract perfectly; here's a screenshot of what the interface looks like, including the preview of the tabular extraction:
-
-<a href="https://console.aws.amazon.com/textract/home?region=us-east-1#/demo">
-<img src="https://user-images.githubusercontent.com/121520/58604820-4a47ee00-8285-11e9-86eb-14de20306709.png">
-</a>
-
-
-(Note: I can't tell if the sample doc was processed as an image file (and thus required actual OCR functionality), or as a regular text PDF. And I was too lazy to poke around the Textract API docs to figure it out)
-
 
 **Again, fair warning**: for this gist, I'm mostly/only interested in seeing how good Textract is when it comes to extracting data tables from **non-image PDFs**. In other words, I don't really care about Textract's OCR's capability for now, [though you can read Mozilla Source's roundup of OCR options (which didn't include Textract at time of publication)](https://source.opennews.org/articles/so-many-ocr-options/) to get a taste of how complex and painful the OCR problem is on its own. In other other words, we can assume that if data table extraction is hard, then data table extraction on the results of OCRed document is an additional level of of clusterfuck complexity; if Textract can just get data table extraction right, that will be a huge victory for data folks on its ownn
 
