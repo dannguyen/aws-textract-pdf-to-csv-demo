@@ -10,12 +10,12 @@
 ## File manifest
 
 - [fbi-nics-sample-page.pdf](fbi-nics-sample-page.pdf): an example page from the FBI NICS system representing data for November 2015. This PDF file was copied directly from [jsvine/pdfplumber](https://github.com/jsvine/pdfplumber/blob/master/examples/pdfs/background-checks.pdf)'s example,[ background-checks.pdf](https://github.com/jsvine/pdfplumber/blob/master/examples/pdfs/background-checks.pdf)
-- [textract-results-background-checks.zip](results/textract-results-background-checks.zip): the zip file that the Textract demo sends you as a download
+- [textract-results-fbi-nics.zip](results/textract-results-fbi-nics.zip): the zip file that the Textract demo sends you as a download
     - And, for your convenience, the individual files as extracted from the zip:
-     - [apiResponse.json](textract-results-background-checks-zip/apiResponse.json)
-     - [keyValues.csv](textract-results-background-checks-zip/keyValues.csv) (note: this file is empty)
-     - [rawText.txt](textract-results-background-checks-zip/rawText.txt)
-     - [tables.csv](textract-results-background-checks-zip/tables.csv)
+     - [apiResponse.json](results/textract-results-fbi-nics-zip/apiResponse.json)
+     - [keyValues.csv](results/textract-results-fbi-nics-zip/keyValues.csv) (note: this file is empty)
+     - [rawText.txt](results/textract-results-fbi-nics-zip/rawText.txt)
+     - [tables.csv](results/textract-results-fbi-nics-zip/tables.csv)
 - [abbyy.xlsx](results/abbyy.xlsx): the PDF-to-XLSX conversion produced by ABBYY FineReader 12.1 for MacOS
 - [abbyy.csv](results/abbyy.csv): the PDF-to-XLSX conversion via ABBYY FineReader, but saved as CSV. 
 
