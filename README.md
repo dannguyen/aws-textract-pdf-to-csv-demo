@@ -1,6 +1,6 @@
-# How good is AWS Textract at extracting data tables from PDFs, and can it save and deliver us from the seemingly-eternal fiery suffering that is pdf-to-csv conversion today
+# How good is AWS Textract at extracting data tables from PDFs, and can it deliver us from the eternal fiery suffering that is converting-pdf-to-csv today
 
-Amazon has just released its Textract cloud service to the public. Textract claims to provide the miracle of efficient accurate extraction of text (i.e. optical-character recognition) and tabular data, from all the cursed PDFs and scanned documents we upload to its cloud servers and algorithms.
+Amazon has just released its long-awaited [Textract cloud service](https://aws.amazon.com/textract/) for public use. Textract claims to perform the miracle of efficient and accurate extraction of text (i.e. optical-character recognition) and tabular data, from every and all the cursed PDFs and scanned documents we upload to its cloud algorithms.
 
 This repo aims to show how Textract performs on real-world PDFs, and how it compares to the current and messy state-of-the-art and expectations. 
 
