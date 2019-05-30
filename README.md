@@ -2,9 +2,8 @@
 
 Testing AWS Textract's ability to extract data tables from real-world data PDFs (i.e. pdf-to-csv)
 
-I originally intended to do a quick writeup of AWS just-released Textract cloud service and thought I could write about how it did on a particular FBI PDF report [in just a gist](https://gist.github.com/dannguyen/3673e67a495c172abbd3bb8a9a6e199a). But I soon realize the number of files involved – e.g. screenshots, example PDFs, CSV output from multiple software solutions besides Textract – was really impractical for a Github gist, and much more manageable as a Github repo. So here you are.
 
-**This is a work in progress** (and likely to be abandoned because I hate this kind of work when it's actual work, nevermind doing it out of "fun" and curiosity). 
+> **This is a work in progress** (and likely to be abandoned because I hate pdf work when it's for an actual job, and despite it even more as a hobby). I originally wanted to do a quick writeup of the new AWS Textract cloud service, and I thought I could write about how it did on a particular FBI data report [in just a single Github gist](https://gist.github.com/dannguyen/3673e67a495c172abbd3bb8a9a6e199a). But I soon realized the number of files involved – e.g. screenshots, example PDFs, CSV output from multiple software solutions besides Textract – was really impractical for a Github gist, and much more manageable as a Github repo. So here you are.
 
 
 Further down in this README,[ you'll see the raw data and my observations](#bookmark-intro-to-aws) on how Textract performed on the sample image file that Amazon provides (tl;dr: surprise surprise, it does a perfect job!). So far, I also have a [partial writeup and data on how Textract handles a PDF](./examples/fbi-nics/README-fbi-nics.md) from the FBI National Instant Criminal Background Check System (tl;dr: pretty good for how complicated the PDF is; unfortunately, it also makes a few serious and unpredictable errors in transcribing various data values):
@@ -12,9 +11,7 @@ Further down in this README,[ you'll see the raw data and my observations](#book
 <img src="examples/fbi-nics/assets/images/fbi-nics-pdf-and-tables-csv-closeup-vertical-comparison.png" alt="fbi-nics-pdf-and-tables-csv-closeup-vertical-comparison.png">
 
 
-
 I hope to test out Textract on some other well-known public and important PDFs:
-
 
 ### Example real-world PDFs (TK)
 
@@ -80,3 +77,17 @@ For your convenience, this repo contains the zip file that the Textract demo sup
 
 
 
+
+
+## Why extracting data tables from PDFs is so hard
+
+PDF is a great format for when you need a digital document that – unlike the vast majority of webpages and spreadsheets – will essentially look the same to anyone else who opens it on any computer, and/or wants to print it out on paper. PDFs, like Word documents, can contain not just standard prose, but data tables – such as copy-pasting from an Excel spreadsheet into Word, and then saving as PDF.
+
+But for various technical reasons, extracting the data table from a PDF is often not as easy as copy-pasting from PDF into Excel. In fact, the metadata of the data's layout and structure is usually destroyed and irrecoverable when data tables are saved as PDF documents. It's a hard enough problem that it's one of the only situations in which I've given up on trying to hack it myself and settled for a commercial software package that is non-unscriptable (i.e. have to use by manual point-and-click): $99 for ABBYY FineReader – [which is *still* far-from-perfect but good enough](https://github.com/helloworlddata/white-house-salaries), all things considered.
+
+Note: If you are interested in more technical details about on why extracting data tables from PDFs is so complicated, I highly recommend the following resources:
+
+- [Heart of Nerd Darkness: Why Updating Dollars for Docs Was So Difficult](https://www.propublica.org/nerds/heart-of-nerd-darkness-why-dollars-for-docs-was-so-difficult), by ProPublica's Jeremy Merrill, which is an excellent and detailed overview of the PDF problem and how it applies to a real-world data investigation.
+- [Introducing Tabula](https://source.opennews.org/en-US/articles/introducing-tabula/), by the authors of the Knight Mozilla-supported [open source Tabula project](https://source.opennews.org/articles/introducing-tabula/), because PDF-to-CSV is really that huge of a data problem for journalists.
+- [Introduction to The Camelot Project](https://camelot-py.readthedocs.io/en/master/user/intro.html), excellent documentation and writeup by another open source PDF-to-CSV extraction library and tool, because PDF-to-CSV is a massive problem for everyone who works with documents and data
+- [One of the many, many Hacker News discussions about how awesome it would be if someone could create a good PDF-to-CSV tool](https://news.ycombinator.com/item?id=13729301)

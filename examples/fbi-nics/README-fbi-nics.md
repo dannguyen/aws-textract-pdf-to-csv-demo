@@ -7,61 +7,92 @@
 
 
 
-## File manifest
-
-- [fbi-nics-sample-page.pdf](fbi-nics-sample-page.pdf): an example page from the FBI NICS system representing data for November 2015. This PDF file was copied directly from [jsvine/pdfplumber](https://github.com/jsvine/pdfplumber/blob/master/examples/pdfs/background-checks.pdf)'s example,[ background-checks.pdf](https://github.com/jsvine/pdfplumber/blob/master/examples/pdfs/background-checks.pdf)
-- [textract-results-fbi-nics.zip](results/textract-results-fbi-nics.zip): the zip file that the Textract demo sends you as a download
-    - And, for your convenience, the individual files as extracted from the zip:
-     - [apiResponse.json](results/textract-results-fbi-nics-zip/apiResponse.json)
-     - [keyValues.csv](results/textract-results-fbi-nics-zip/keyValues.csv) (note: this file is empty)
-     - [rawText.txt](results/textract-results-fbi-nics-zip/rawText.txt)
-     - [tables.csv](results/textract-results-fbi-nics-zip/tables.csv)
-- [abbyy.xlsx](results/abbyy.xlsx): the PDF-to-XLSX conversion produced by ABBYY FineReader 12.1 for MacOS
-- [abbyy.csv](results/abbyy.csv): the PDF-to-XLSX conversion via ABBYY FineReader, but saved as CSV. 
-
 
 ## Intro
 
 
 
-**Again, fair warning**: for this gist, I'm mostly/only interested in seeing how good Textract is when it comes to extracting data tables from **non-image PDFs**. In other words, I don't really care about Textract's OCR's capability for now, [though you can read Mozilla Source's roundup of OCR options (which didn't include Textract at time of publication)](https://source.opennews.org/articles/so-many-ocr-options/) to get a taste of how complex and painful the OCR problem is on its own. In other other words, we can assume that if data table extraction is hard, then data table extraction on the results of OCRed document is an additional level of of clusterfuck complexity; if Textract can just get data table extraction right, that will be a huge victory for data folks on its ownn
-
-
-
-## Why extracting data tables from PDFs is so hard
-
-PDF is a great format for when you need a digital document that – unlike the vast majority of webpages and spreadsheets – will essentially look the same to anyone else who opens it on any computer, and/or wants to print it out on paper. PDFs, like Word documents, can contain not just standard prose, but data tables – such as copy-pasting from an Excel spreadsheet into Word, and then saving as PDF.
-
-But for various technical reasons, extracting the data table from a PDF is often not as easy as copy-pasting from PDF into Excel. In fact, the metadata of the data's layout and structure is usually destroyed and irrecoverable when data tables are saved as PDF documents. It's a hard enough problem that it's one of the only situations in which I've given up on trying to hack it myself and settled for a commercial software package that is non-unscriptable (i.e. have to use by manual point-and-click): $99 for ABBYY FineReader – [which is *still* far-from-perfect but good enough](https://github.com/helloworlddata/white-house-salaries), all things considered.
-
-Note: If you are interested in more technical details about on why extracting data tables from PDFs is so complicated, I highly recommend the following resources:
-
-- [Heart of Nerd Darkness: Why Updating Dollars for Docs Was So Difficult](https://www.propublica.org/nerds/heart-of-nerd-darkness-why-dollars-for-docs-was-so-difficult), by ProPublica's Jeremy Merrill, which is an excellent and detailed overview of the PDF problem and how it applies to a real-world data investigation.
-- [Introducing Tabula](https://source.opennews.org/en-US/articles/introducing-tabula/), by the authors of the Knight Mozilla-supported [open source Tabula project](https://source.opennews.org/articles/introducing-tabula/), because PDF-to-CSV is really that huge of a data problem for journalists.
-- [Introduction to The Camelot Project](https://camelot-py.readthedocs.io/en/master/user/intro.html), excellent documentation and writeup by another open source PDF-to-CSV extraction library and tool, because PDF-to-CSV is a massive problem for everyone who works with documents and data
-- [One of the many, many Hacker News discussions about how awesome it would be if someone could create a good PDF-to-CSV tool](https://news.ycombinator.com/item?id=13729301)
+**Again, fair warning**: for this gist, I'm mostly/only interested in seeing how good Textract is when it comes to extracting data tables from **non-image PDFs**. In other words, I don't really care about Textract's OCR's capability for now, [though you can read Mozilla Source's roundup of OCR options (which didn't include Textract at time of publication)](https://source.opennews.org/articles/so-many-ocr-options/) to get a taste of how complex and painful the OCR problem is on its own. In other other words, we can assume that if data table extraction is hard, then data table extraction on the results of OCRed document is an additional level of of clusterfuck complexity; if Textract can just get data table extraction right, that will be a huge victory for data folks on its own
 
 
 
 
 ## Why the FBI's report on background checks for firearms is a very annoying data PDF
 
-In any case, rather than try Textract on a real-world-but-simple PDF, I decided to upload one of the most annoying government data-as-PDF examples I've seen: a report from the **FBI's National Instant Criminal Background Check System**, which Jeremy Singer-Vine uses as an example (complete [with Jupyter notebook](https://github.com/jsvine/pdfplumber/blob/master/examples/notebooks/extract-table-nics.ipynb)) to demonstrate the **pdfplumber** library he wrote (yes, yet another open source PDF-to-CSV project, because it really is such a painful and critical problem). You can read Singer-Vine's [helpful Python notebook showing the code and the PDF](https://github.com/jsvine/pdfplumber/blob/master/examples/notebooks/extract-table-nics.ipynb). Or better yet, you can read Singer-Vine's [separate writeup of the FBI data](https://github.com/BuzzFeedNews/nics-firearm-background-checks) (one of the best web-scraping-for-journalism examples I've seen). Or even even better, read a story that Singer-Vine's BuzzFeed News colleague, Peter Aldhous, wrote based on the data: [Under Trump, Gun Sales Did Not Spike After The Las Vegas Shooting](https://www.buzzfeednews.com/article/peteraldhous/gun-sales-after-vegas-shooting).
+When wanting to put Textract through a real PDF test, I immediately thought of the PDFs generated by the **FBI's National Instant Criminal Background Check System**, which Jeremy Singer-Vine uses as an example (complete [with Jupyter notebook](https://github.com/jsvine/pdfplumber/blob/master/examples/notebooks/extract-table-nics.ipynb)) to demonstrate the **pdfplumber** library he wrote (yes, yet another open source PDF-to-CSV project, because it really is such a painful and critical problem). 
 
-Suffice to say, the background-checks.pdf supplied by pdfplumber is a very nice example of a data-stuck-in-PDF – it has real-world importance and is actually, at first glance, very readable, but contains enough technical and epistemological issues to be a hard challenge to both humans and automated software when it comes to extracting the data.
+You can read Singer-Vine's [helpful Python notebook showing the code and the PDF](https://github.com/jsvine/pdfplumber/blob/master/examples/notebooks/extract-table-nics.ipynb). Or better yet, you can read Singer-Vine's [separate writeup of the FBI data](https://github.com/BuzzFeedNews/nics-firearm-background-checks) (one of the best web-scraping-for-journalism examples I've seen). Or even even better, read a story that Singer-Vine's BuzzFeed News colleague, Peter Aldhous, wrote based on the data: [Under Trump, Gun Sales Did Not Spike After The Las Vegas Shooting](https://www.buzzfeednews.com/article/peteraldhous/gun-sales-after-vegas-shooting).
+
+Suffice to say, the background-checks.pdf supplied by pdfplumber is a very nice example of a data-stuck-in-PDF problem: it has real-world importance and is actually, at first glance, very readable, but contains enough technical and epistemological issues to be a hard challenge to both humans and automated software when it comes to extracting the data.
+
+
+Here's the background-checks.pdf PDF, as copied to this repo
+
+- [fbi-nics-sample-page.pdf](fbi-nics-sample-page.pdf): an example page from the FBI NICS system representing data for November 2015. This PDF file was copied directly from [jsvine/pdfplumber](https://github.com/jsvine/pdfplumber/blob/master/examples/pdfs/background-checks.pdf)'s example,[ background-checks.pdf](https://github.com/jsvine/pdfplumber/blob/master/examples/pdfs/background-checks.pdf)
+
 
 ## How Textract handles the FBI NICS example PDF
 
-So I uploaded the single-page example [backgrounds-checks.pdf](https://github.com/jsvine/pdfplumber/blob/master/examples/pdfs/background-checks.pdf) to Textract. After about a minute, I was able to download a zip which contained 4 files, 3 of which I've attached to this gist in their raw forms:
+So I uploaded the single-page example [backgrounds-checks.pdf](https://github.com/jsvine/pdfplumber/blob/master/examples/pdfs/background-checks.pdf) to Textract. After about a minute, I was able to download a zip which contained 4 files; I've uploaded the zip and the individual files to this repo:
 
 
-- apiResponse.json (3.6MB): contains the data behind Textract's decision at the granular per-word/character/line level, including the exact bounding boxes and confidvalues for each text extraction.
-- keyValues.csv (empty): Not sure what this is supposed to be but it was empty
-- rawText.txt (5 KB): just the extracted results as a stream of unformatted plaintext
-- tables.csv (9 KB): the tabular data that Textract found, in spreadsheet-ready format
+- [textract-results-fbi-nics.zip](results/textract-results-fbi-nics.zip): the zip file that the Textract demo sends you as a download
+     - [apiResponse.json](results/textract-results-fbi-nics-zip/apiResponse.json)
+     - [keyValues.csv](results/textract-results-fbi-nics-zip/keyValues.csv) (note: this file is empty)
+     - [rawText.txt](results/textract-results-fbi-nics-zip/rawText.txt)
+     - [tables.csv](results/textract-results-fbi-nics-zip/tables.csv)
+
+
 
 
 **tables.csv** is the thing we obviously care about. You can download it and open it in Excel yourself, but for your convenience, I've also uploaded it to Google Sheets. Or you can just read my quick summations and screenshots below:
 
 Here's a screenshot of the top half of the table, and all of its columns, to show that Textract did quite well in not only getting the right number of columns, but also dealing with the confusing grouped headers
 
+<img src="assets/images/fbi-nics-background-checks-tables-csv-in-excel-preview.png" alt="">
+
+However, on closer inspection of the first few rows and columns, we can see that Textract made some serious errors in transcribing data values. Here's a closeup of those rows and columns in the PDF:
+
+<img src="assets/images/fbi-nics-pdf-closeup.png" alt="">
+
+And here a closeup of the Textract tables.csv in Excel -- I've manually highlighted the problems; yellow for serious and red for really f--king serious:
+
+<img src="assets/images/fbi-nics-tables-csv-problems-closeup-in-excel.png" alt="">
+
+> Note: I stupidly forgot to configure Excel to *not* do its dumbass default behavior of typecasting data, so the above screenshot does *not* contain the literal text of tables.csv. For example, the data value in the cell **B3** reads as `18.87`, but the text value in tables.csv is `18.870`. Those two values are numerically equivalent, but I just wanted to be clear that Textract did *not* read `18,870` as literally `18.87`; 
+
+## What did Textract screw up, and why?
+
+A short list of the major problems:
+
+- Some commas are interpreted as decimal points, e.g. the value for *Alabama / Handguns* should be `23,022`, not `23.022`.
+- An even more serious error can be found in the *Alabama / Multiple* cell. The original value is `1,178`, but Textract's algorithm apparently did not catch the leading `1`, leading to an interpreted value of `.178` (which Excel's data-typing converts to `0.178`) 
+- Several cells are just blank. Not just for cells in which the values are `0`, but for cells that have non-zero numbers, like *District of Columbia / Long Gun*, which should be `2`
+
+First of all, in Textract's defense, the FBI NICS PDF is complicated and annoying in inconsistent ways – like, why are some numbers of
+
+Still, Textract flat-out mistranslating commas into decimal points and missing some numbers entirely will make it a non-starter for many folks hoping for a programmatic solution that is 99% accurate (with the other 1% predictable and programmatically fixable). So if I had to make a total layperson guess about why Textract has failed in this way, this is my guess: 
+
+Textract -- even though I uploaded a document PDF with perfectly usable text data -- ends up converting the PDF to an image, which it then OCRs imperfectly. And then it attempts to derive the data table from this imperfect OCRed data, which results in a data table full of occasional, but critical and unpredictable data errors.
+
+Converting a text-based PDF to an image is not only wasteful because it throws away the actual raw text data -- it unavoidably corrupts the text data when the text is turned into an *image* of a text. For example, here's a screenshot of the first few columns/rows of the PDF, taken when viewing the PDF at its normal 100% size:
+
+<img src="assets/images/fbi-nics-regular-zoom-first-columns-pdf.png" alt="fbi-nics-regular-zoom-first-columns-pdf.png">
+
+If we zoom into this screenshot, we can see how the quality of the text naturally degrades when saved as an image format such as PNG:
+
+<img src="assets/images/fbi-nics-regular-zoom-first-columns-pdf.png" alt="fbi-nics-regular-zoom-first-columns-pdf.png">
+
+Take particular notice of how the commas can become hard, even to the human eye, to differentiate from a decimal point. It's understandable that Textract, having no context about this data, would assume some of these fuzzy commas to be decimal points.
+
+
+To further support my hypothesis, here's how ABBYY FineReader for MacOS did on the FBI NICs PDF:
+
+- [abbyy.xlsx](results/abbyy.xlsx): the PDF-to-XLSX conversion produced by ABBYY FineReader 12.1 for MacOS
+- [abbyy.csv](results/abbyy.csv): the PDF-to-XLSX conversion via ABBYY FineReader, but saved as CSV. 
+
+At a glance, the data looks accurately transcribed. Or, at the very least, free of the immediately noticeable errors that Textract makes. As far as I know, while ABBYY FineReader will attempt to OCR a PDF full of scanned images, when FineReader is given a document PDF, it makes full use of the text data in the PDF. 
+
+I didn't take the time yet to see how FineReader would do on a PNG version of the FBI NICS pdf, though I can readily assume it wouldn't do any better than Amazon. Still, no matter how good Amazon's OCR tech is, throwing away perfectly good PDF document data is just silly. Hopefully, Amazon iterates on Textract by creating an option to deal with document PDFs natively, because its table extraction appears to be solid (at first glance). And that's a **massive** win for everyone working in the public data space today.
+
+TODO/TK: More observations about how good the table structure and extraction is...
