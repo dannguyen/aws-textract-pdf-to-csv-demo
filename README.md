@@ -1,4 +1,4 @@
-# How good is AWS Textract at extracting data tables from PDFs, and can it deliver us from the eternal fiery suffering that is converting-pdf-to-csv today
+# How good is AWS Textract at extracting data tables from PDFs, and can it deliver us from the eternal fiery hell that is converting-pdf-to-csv today
 
 Amazon has just released its long-awaited [Textract cloud service](https://aws.amazon.com/textract/) for public use. Textract claims to perform the miracle of efficient and accurate extraction of text (i.e. optical-character recognition) and tabular data, from every and all the cursed PDFs and scanned documents we upload to its cloud algorithms.
 
@@ -42,12 +42,19 @@ Like most of their cloud APIs, Amazon provides an easy-to-use point-and-click de
 
 https://console.aws.amazon.com/textract/home#/demo
 
+
+
+The Textract demo lets us upload our own image or PDF to process. But as you can see in the left panel, the demo comes [conveniently preloaded with an example file](https://s3.us-east-1.amazonaws.com/textract-public-assets-us-east-1/default_document.png) –  a sample document titled **"Employment Application"** that you might create in a word processor, and which includes a simple data table, **"Previous Employment History"**. 
+
 <img src="examples/default-sample-document/assets/images/textract-demo-default-initial-view.png" alt="textract-demo-default-initial-view.png">
 
 
-The Textract demo allows us to upload our own image or PDF to process. As you can see in the left panel, the demo comes [conveniently preloaded with an example file](https://s3.us-east-1.amazonaws.com/textract-public-assets-us-east-1/default_document.png) –  a sample "Employment Application" document that you might create in a word processor, which includes a simple data table titled, **"Previous Employment History"**. The right half of the demo page displays the purported results of Textract's analysis – specifically, the extracted "Raw Text".
+The right half of the demo page displays the purported results from Textract's analysis; the default tab of "Raw Text" shows the actual text strings that Textract's OCR found.
 
-So whether the example sample document is an image or a PDF document is an important technical detail. It seems to be this [PNG file served from Amazon's servers](https://s3.us-east-1.amazonaws.com/textract-public-assets-us-east-1/default_document.png). However, I've saved a copy of the PNG to this repo and embedded it here so you can see it in closer detail:
+
+There is one important technical detail to consider: did this demo process a document-saved-as-PDF? Or the image/screenshot of a document? Because the document PDF would/should not require OCR processing, since that kind of file usually contains the plain text (and some layout metadata). 
+
+As it is, I could not find anything on the demo site referring to a PDF file.  I did find an [image file in the PNG format served from Amazon's servers](https://s3.us-east-1.amazonaws.com/textract-public-assets-us-east-1/default_document.png), which I've saved a copy to this repo and embedded it below so you can see it in closer detail:
 
 <p style="text-align: center; margin: auto;">
     <a href="examples/default-sample-document/default_document.png">
@@ -55,16 +62,19 @@ So whether the example sample document is an image or a PDF document is an impor
 </a>
 </p>
 
-I also uploaded my copy of the PNG to the Textract demo, just to make sure the analyzed results aren't a canned file. 
 
-Why is it important that the analyzed sample file is a PNG image file rather than a document PDF? Because the latter would not require OCR processing, since the PDF document contains the actual text content/layout. I can't find the original document for Textract's sample document (i.e. in PDF format) so we don't have any choice but to see how good Textract is at in both its OCR feature and its tabular data extraction feature.
+And just to make sure the Textract demo isn't simply providing a canned results file, I uploaded my copy of the sample PNG, which should force it to analyze it anew. Again, since the upload is an image file, Textract has to succeed in two hard and separate computational tasks: OCR, and tabular data extraction. 
 
-(again, most data folks would be extremely happy for Textract to succeed in just the latter feature)
+(And again, most data folks, including me, would be more than extremely happy if Textract was good at just the latter task)
+
 
 
 ### How Textract performs on its own sample document and data table
 
-And...it's a miracle! Textract appears to succeed perfectly in the demo -- extracting text from the image file, and figuring out its likely tabular structure. First, here's a screenshot of the demo interface providing a preview of the tabular extraction:
+And...it's a miracle! Textract appears to do both tasks perfectly in this demo -- it extracts the raw text from the image file. And it figures out how the text was intended to be tabular data. 
+
+
+First, here's a screenshot of the demo interface providing a preview of the tabular data extraction:
 
 <a href="https://console.aws.amazon.com/textract/home#/demo">
     <img src="examples/default-sample-document/assets/images/textract-default-demo.png" alt="">
@@ -87,11 +97,11 @@ OK, obviously, it shouldn't be a surprise that Amazon Textract perfectly passed 
 TODO: More explanatory stuff and observations.
 
 
-For your convenience, this repo contains the zip file that the Textract demo supplies as a download, and the individual data files extracted from that zip:
+For your convenience, this repo contains the zip file downloaded from the Textract demo, as well as the individual data files extracted from that zip:
 
 - [textract-results-default_document.zip](examples/default-sample-document/results/textract-results-default_document.zip): the zip file that the Textract demo serves as a download. In the zip file are 4 data files:
      - [apiResponse.json](examples/default-sample-document/results/textract-results-default_document-zip/apiResponse.json)
-     - [keyValues.csv](examples/default-sample-document/results/textract-results-default_document-zip/keyValues.csv) (note: this file is empty)
+     - [keyValues.csv](examples/default-sample-document/results/textract-results-default_document-zip/keyValues.csv) 
      - [rawText.txt](examples/default-sample-document/results/textract-results-default_document-zip/rawText.txt)
      - [tables.csv](examples/default-sample-document/results/textract-results-default_document-zip/tables.csv)
 
