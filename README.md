@@ -6,15 +6,19 @@ This repo aims to show how Textract performs on real-world PDFs, and how it comp
 
 ### (work in progress)
 
-Further down in this README, you can find [the raw data and my observations](#bookmark-intro-to-aws) on how Textract performed on the sample image file that Amazon provides. tl;dr: surprise surprise, Textract performs perfectly in a staged demo.
+You can jump down to where [I go through Textract's canned-demo, and provide Textract's raw data and some observations](#bookmark-textract-demo) about Textract's functionality. (tl;dr: surprise surprise, Textract performs perfectly in a staged demo)
 
-For a real-world example -- and a difficult one at that -- I have the raw data results and a partial writeup on how Textract handles a sample report from the FBI National Instant Criminal Background Check System. The writeup [contains some background about this particular report (and how I got the inspiration from BuzzFeed News's Jeremy Singer-Vine)](./examples/fbi-nics/README-fbi-nics.md), but you can also jump to some initial conclusions, which, tl;dr: Textract did a good job with the hard problem of extracting tabular structure, but unfortunately and inexplicably screws up what should be the easier problem: accurately copying the actual data values. It seems to be a fixable problem, but right now, the data errors are serious (and unpredictable) enough that Textract is not yet a suitable replacement for ABBYY FineReader, or libraries like Tabula and Camelot.
+For a real-world complicated example, you can check out the raw data results and a [partial writeup](./examples/fbi-nics/README-fbi-nics.md) on how Textract handles a sample report from the FBI National Instant Criminal Background Check System. The writeup [contains some background about this particular report (and how I got the inspiration from BuzzFeed News's Jeremy Singer-Vine)](./examples/fbi-nics/README-fbi-nics.md) as well as my initial observations and disappointments.
+
+tl;dr: Textract did a good job with the hard problem of extracting tabular structure. But it inexplicably screws up the easier problem of not adding random errors to the data. It does seem to be fixable, but currently Textract won't be an automatically replacement for ABBYY FineReader, or libraries like Tabula and Camelot:
 
 <img src="examples/fbi-nics/assets/images/fbi-nics-pdf-and-tables-csv-closeup-vertical-comparison.png" alt="fbi-nics-pdf-and-tables-csv-closeup-vertical-comparison.png">
 
 
+----------------
 
-> **NOTE: This is a work in progress** (and likely to be abandoned because I hate pdf work when it's for an actual job, and despite it even more as a hobby). I originally wanted to do a quick writeup of the new AWS Textract cloud service, and I thought I could write about how it did on a particular FBI data report [in just a single Github gist](https://gist.github.com/dannguyen/3673e67a495c172abbd3bb8a9a6e199a). But I soon realized the number of files involved – e.g. screenshots, example PDFs, CSV output from multiple software solutions besides Textract – was really impractical for a Github gist, and much more manageable as a Github repo. So here you are.
+
+> **NOTE: This repo is a work in progress** (and likely to be abandoned because I hate pdf work when it's for an actual job, and despite it even more as a hobby). I originally wanted to do a quick writeup of the new AWS Textract cloud service, and I thought I could write about how it did on a particular FBI data report [in just a single Github gist](https://gist.github.com/dannguyen/3673e67a495c172abbd3bb8a9a6e199a). But I soon realized the number of files involved – e.g. screenshots, example PDFs, CSV output from multiple software solutions besides Textract – was really impractical for a Github gist, and much more manageable as a Github repo. So here you are.
 
 
 
@@ -29,12 +33,16 @@ OCR (extracting text from images, i.e. scanned documents) is already a high-dema
 
 Extracting tabular data from PDFs (even document PDFs with plaintext data that don't require OCR) is geekier and lesser-appreciated problem, but unfortunately, one that is still critical for much investigative data journalism (and data work in general). I've [compiled a separate section about this horrible niche problem](#bookmark-pdfs-hard). But it's enough to say that Textract is an exciting announcement because Amazon has a proven reputation for making powerful and easy-to-use cloud APIs.
 
+<a name="bookmark-textract-demo" id="bookmark-textract-demo"></a>
+
 
 ### The easy Textract demo
 
-Like most of their cloud APIs, Amazon provides an easy-to-use point-and-click demo of Textract in the AWS console:https://console.aws.amazon.com/textract/home#/demo
+Like most of their cloud APIs, Amazon provides an easy-to-use point-and-click demo of Textract in the AWS console: 
 
-<img src="assets/images/textract-demo-default-initial-view.png" alt="textract-demo-default-initial-view.png">
+https://console.aws.amazon.com/textract/home#/demo
+
+<img src="examples/default-sample-document/assets/images/textract-demo-default-initial-view.png" alt="textract-demo-default-initial-view.png">
 
 
 The Textract demo allows us to upload our own image or PDF to process. As you can see in the left panel, the demo comes [conveniently preloaded with an example file](https://s3.us-east-1.amazonaws.com/textract-public-assets-us-east-1/default_document.png) –  a sample "Employment Application" document that you might create in a word processor, which includes a simple data table titled, **"Previous Employment History"**. The right half of the demo page displays the purported results of Textract's analysis – specifically, the extracted "Raw Text".
