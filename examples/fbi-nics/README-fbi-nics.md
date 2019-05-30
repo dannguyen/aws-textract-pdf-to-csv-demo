@@ -91,8 +91,7 @@ If we zoom into this screenshot, we can see how the quality of the text naturall
 
 <img src="assets/images/fbi-nics-regular-zoom-first-columns-pdf.png" alt="fbi-nics-regular-zoom-first-columns-pdf.png">
 
-Take particular notice of how the commas can become hard, even to the human eye, to differentiate from a decimal point. It's understandable that Textract, having no context about this data, would assume some of these fuzzy commas to be decimal points.
-
+Notice in particular how the commas become a fuzzy pixelated mess and difficult to differentiate from a decimal point. If Textract is trying to OCR an image like this, then it's unsurprising that it would mistake some of the commas for decimal points – remember that Textract's AI/machine-learning still can't "read" the document and glean the basic overall context about the FBIand its data, in the way that even a 2nd-grade child could.
 
 To further support my hypothesis, here's how ABBYY FineReader for MacOS did on the FBI NICs PDF:
 
